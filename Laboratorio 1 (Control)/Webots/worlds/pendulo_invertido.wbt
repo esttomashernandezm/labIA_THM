@@ -2,6 +2,7 @@
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/Floor.proto"
 
 WorldInfo {
   info [
@@ -11,38 +12,18 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.07843635831924552 0.13900629366601108 0.9871803219345763 1.5330712872841437
-  position -0.826842814821118 -4.879907747197737 1.178047001205762
+  orientation 0.2289007734433325 -0.1341884972551655 -0.9641565656683798 3.9481241236692872
+  position 3.176136682798244 -4.2974290170900815 2.173719868214627
 }
-TexturedBackground {
-  skyColor [
-    1 0.55 0
-    0.8 0.3 0.4
-    0.1 0.1 0.4
-  ]
-}
-TexturedBackgroundLight {
-}
-DEF CUSTOM_FLOOR Solid {
-  children [
-    Shape {
-      geometry IndexedFaceSet {
-        coord Coordinate {
-          point [
-            10 10 0
-            10 -10 0
-            -10 -10 0
-            -10 10 0
-          ]
-        }
-        coordIndex [
-          0, 1, 2, 3, -1
-        ]
-      }
-    }
-  ]
-  boundingObject Plane {
-    size 20 20
+TexturedBackground {}
+TexturedBackgroundLight {}
+# CAMBIO: Se ha modificado el Floor para cambiar su apariencia.
+Floor {
+  size 10 10
+  appearance PBRAppearance {
+    baseColor 0.4 0.2 0.1  # Color marrón oscuro
+    roughness 0.8
+    metalness 0
   }
 }
 DEF TRACK Solid {
@@ -50,7 +31,7 @@ DEF TRACK Solid {
   children [
     Shape {
       appearance PBRAppearance {
-        baseColor 0.5 0.1 0.1
+        baseColor 0.2 0.2 0.2
         roughness 0.2
       }
       geometry Box {
@@ -67,6 +48,7 @@ Robot {
   children [
     SliderJoint {
       jointParameters JointParameters {
+        position 0
         axis 1 0 0
         minStop -0.8
         maxStop 0.8
@@ -82,10 +64,12 @@ Robot {
       ]
       endPoint DEF CART Solid {
         translation 0 0 0.05
+        rotation 0 0 1 0
         children [
           Shape {
             appearance PBRAppearance {
-              baseColor 1 0 0
+              # CAMBIO: El color base del carro ahora es verde.
+              baseColor 0.2 0.8 0.3
               roughness 1
               metalness 0
             }
@@ -95,6 +79,7 @@ Robot {
           }
           HingeJoint {
             jointParameters HingeJointParameters {
+              position 0.02
               axis 0 1 0
               anchor 0 0 0.025
             }
@@ -105,10 +90,11 @@ Robot {
             ]
             endPoint Solid {
               translation 0 0 0.25
+              rotation 0 0 1 0
               children [
                 DEF POLE Shape {
                   appearance PBRAppearance {
-                    baseColor 1 0.4 0.2
+                    baseColor 1 0.5 0.5
                     roughness 1
                     metalness 0
                   }
@@ -124,10 +110,8 @@ Robot {
                 radius 0.01
               }
               physics Physics {
-                density -1
                 mass 0.1
               }
-              linearVelocity 0 0 -1.4399667235315606e-10
             }
           }
         ]
@@ -136,10 +120,8 @@ Robot {
           size 0.2 0.1 0.05
         }
         physics Physics {
-          density -1
           mass 1
         }
-        linearVelocity 0 0 -1.3199937142454395e-10
       }
     }
   ]
